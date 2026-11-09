@@ -15,8 +15,8 @@
 
 | ID | Mode | Previous | Candidate | Expected | Reason |
 |---|---|---|---|---|---|
-| BID-C-001 | N | none | `B(1,1)` | ACCEPT | ordinary opening on Paco face is a face-1 bid, not a Paco conversion |
-| BID-C-002 | N | none | `B(1,6)` | ACCEPT | any face may open |
+| BID-C-001 | N | none | `B(1,1)` | REJECT | face 1 is Paco; opening Paco prohibited |
+| BID-C-002 | N | none | `B(1,6)` | ACCEPT | any ordinary face 2..6 may open |
 | BID-C-003 | N | none | `P(1)` | REJECT | Paco opening prohibited in NORMAL |
 | BID-C-004 | PAL | none | `B(1,1)` | ACCEPT | Palifico opening permitted |
 | BID-C-005 | PAL | none | `B(1,6)` | ACCEPT | Palifico opening permitted |
@@ -30,7 +30,7 @@
 |---|---|---|---|---|
 | BID-N-001 | `B(5,2)` | `B(5,3)` | ACCEPT | same quantity, higher face |
 | BID-N-002 | `B(5,5)` | `B(6,2)` | ACCEPT | quantity increases; any face |
-| BID-N-003 | `B(5,4)` | `B(6,1)` | ACCEPT | quantity increases; face 1 is included |
+| BID-N-003 | `B(5,4)` | `B(6,6)` | ACCEPT | quantity increases; any ordinary face 2..6 |
 | BID-N-004 | `B(5,4)` | `B(5,4)` | REJECT | identical bid |
 | BID-N-005 | `B(5,4)` | `B(5,3)` | REJECT | same quantity, lower face |
 | BID-N-006 | `B(5,4)` | `B(4,6)` | REJECT | lower quantity cannot be compensated by face |
@@ -56,7 +56,7 @@
 | BID-P-009 | `P(4)` | `B(9,2)` | ACCEPT | `2*4+1=9` exact threshold |
 | BID-P-010 | `P(4)` | `B(8,6)` | REJECT | one below threshold |
 | BID-P-011 | `P(4)` | `B(9,6)` | ACCEPT | threshold met; any ordinary face |
-| BID-P-012 | `P(4)` | `B(10,1)` | ACCEPT | threshold met; face 1 is ordinary face notation in candidate |
+| BID-P-012 | `P(4)` | `B(10,6)` | ACCEPT | threshold met; any ordinary face 2..6 |
 
 ## 6. PALIFICO progression
 

@@ -17,7 +17,7 @@
 
 ## 2. Bid representation and common validation
 
-A bid is `(quantity, face)`, where `quantity` is a positive integer and `face` is one of `1..6`. Face `1` is called Paco in bid notation. A bid must not exceed the total dice held by active players. This upper bound is a project rule, applied in addition to the source transition rules.
+A bid is `(quantity, face)`, where `quantity` is a positive integer and `face` is one of `1..6`. A NORMAL bid on face `1` is a Paco bid and uses the dedicated Paco transition rules; it is not an ordinary-face bid. A bid must not exceed the total dice held by active players. This upper bound is a project rule, applied in addition to the source transition rules.
 
 Validation order:
 
@@ -33,8 +33,8 @@ A rejected bid has no state mutation and emits no bid event.
 
 ### 3.1 Opening bid
 
-- Any positive quantity and face `1..6` is allowed subject to the active-dice upper bound.
-- An opening Paco bid is prohibited.
+- Any positive quantity and face `2..6` is allowed subject to the active-dice upper bound.
+- An opening Paco/face-1 bid is prohibited.
 
 ### 3.2 Ordinary face to ordinary face
 
@@ -63,7 +63,7 @@ Given previous Paco quantity `p`, a candidate ordinary face `(q, f)` is legal if
 
 `q >= 2 * p + 1`.
 
-The candidate may use any face `1..6`, subject to the common upper bound.
+The candidate must use an ordinary face `2..6`, subject to the common upper bound. A face-1/Paco bid is governed only by a separate Paco transition; it cannot be treated as an ordinary face.
 
 ## 4. PALIFICO activation and duration
 
@@ -130,11 +130,11 @@ Set `has_declared_palifico=true` only when the player actually declares Palifico
 
 | Mode | Previous bid | Candidate | Legal condition |
 |---|---|---|---|
-| NORMAL | none | any face | any `q>=1`, face `1..6`; not Paco opening |
-| NORMAL | ordinary `(q,f)` | ordinary `(q2,f2)` | `(q2=q and f2>f) or q2>q` |
+| NORMAL | none | ordinary face | any `q>=1`, face `2..6`; Paco opening prohibited |
+| NORMAL | ordinary `(q,f)` | ordinary `(q2,f2)` | faces `2..6`; `(q2=q and f2>f) or q2>q` |
 | NORMAL | ordinary `(q, f)` | Paco `p` | `p>=ceil(q/2)` |
 | NORMAL | Paco `p` | Paco `p2` | `p2>p` |
-| NORMAL | Paco `p` | ordinary `(q,f)` | `q>=2p+1` |
+| NORMAL | Paco `p` | ordinary `(q,f)` | `f in 2..6` and `q>=2p+1` |
 | PALIFICO | none | any face | any `q>=1`, face `1..6`, including Paco |
 | PALIFICO | any previous | any face; no prior declaration | same face and higher quantity |
 | PALIFICO | any previous | any face; prior declaration | same quantity and higher face, or higher quantity and any face |
