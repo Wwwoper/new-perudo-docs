@@ -75,7 +75,7 @@ See `docs/product/review/source-material-and-prototype-review.md` and `docs/prod
 
 ## 6. Handoff package inventory and gaps
 
-The current documentation checkout contains the product, learning, review and ruleset documents listed below. `docs/contracts/game-domain.md` has been added as the authoritative Game Domain contract. The other skill-level contract files referenced by older handoff tables are not present in this checkout and must be supplied or recreated before implementation-level interface design is considered complete.
+The contract set now contains the authoritative Game Domain, S1 and S5–S9 skill contracts, the existing S2–S4 contracts, and the shared Learning Core contract. The index and authority order are defined in `docs/contracts/README.md`. Contract presence closes the documentation inventory gap; it does not imply that every evaluator, example or implementation behavior is verified.
 
 | Artifact | Status |
 |---|---|
@@ -89,7 +89,7 @@ The current documentation checkout contains the product, learning, review and ru
 | Mastery/review and learning strategy policy | PRESENT / REVIEW REQUIRED |
 | UX acceptance and session scripts | PRESENT / NOT EXECUTED |
 | Cross-document consistency matrix | PRESENT / requires final reviewer pass |
-| Skill-level contracts S1–S9 and shared learning-core contracts | NOT PRESENT IN CURRENT CHECKOUT |
+| Skill-level contracts S1–S9 and shared learning-core contract | PRESENT; see `docs/contracts/README.md` |
 | Technical package/API/storage decisions | INTENTIONALLY NOT SELECTED |
 
 ## 7. Gates before implementation/release
@@ -111,14 +111,14 @@ The current documentation checkout contains the product, learning, review and ru
 
 **Authorized now:** technical design may begin against the approved product scope and Game Domain 2.0.0 contract. The design must preserve the stated module boundaries, public/private data split, local-first constraints and versioning rules.
 
-**Not authorized by this document:** declaring implementation ready, approving all scored exercise content, closing privacy/accessibility/reliability gates, or beginning release acceptance. Missing skill-level contracts must be reconciled before detailed API/DTO design is frozen.
+**Not authorized by this document:** declaring implementation ready, approving all scored exercise content, closing privacy/accessibility/reliability gates, or beginning release acceptance. Skill-level contract inventory is now present. Detailed API/DTO design may proceed as a separate technical-design activity, but each proposed interface must be traced to its authoritative contract and preserve the public/private data boundary.
 
 The technical design must not silently choose a programming language, framework, database, hosting provider or physical package layout as if those were product decisions. Such choices belong to a separately requested technical-design stage.
 
 ## 9. Required handoff outputs
 
 1. Technical design traceability matrix from each product requirement to module/API/storage responsibility.
-2. Explicit list of missing S1–S9 and Learning Core contracts, with owners and resolution plan.
+2. Contract traceability from S1–S9 and Learning Core to module responsibilities and future interfaces.
 3. Ruleset 2.0.0 transition vectors mapped to future implementation tests.
 4. Example review register with individual decisions and accepted alternatives.
 5. Data classification and privacy plan for local trusted evaluation and user-supplied history.

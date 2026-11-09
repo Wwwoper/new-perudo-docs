@@ -1,6 +1,6 @@
 # Матрица сквозной согласованности S1–S9
 
-**Статус:** обновлена после утверждения ruleset `2.0.0`; статусы не означают, что проверки реализации выполнены.
+**Статус:** обновлена после утверждения ruleset `2.0.0` и добавления skill contracts S1/S5–S9; статусы не означают, что проверки реализации выполнены.
 
 ## 1. Назначение и статусная модель
 
@@ -20,15 +20,15 @@
 
 | Skill | Source of truth / boundary | MVP evidence family | Evaluation focus | Progress attribution | UX acceptance | Current audit status |
 |---|---|---|---|---|---|---|
-| S1 | `docs/contracts/game-domain.md` ruleset 2.0.0 | S1 examples + ruleset v2 fixtures | Правильное применение утверждённого правила и последствие | Primary S1; fixtures требуют review | Ясный режим, событие и вопрос о последствии | DOCUMENTED; examples REVIEW REQUIRED |
+| S1 | `docs/contracts/s1-rules-and-mechanics.md` + Game Domain 2.0.0 | S1 examples + ruleset v2 fixtures | Правильное применение утверждённого правила и последствие | Primary S1; fixtures требуют review | Ясный режим, событие и вопрос о последствии | DOCUMENTED; examples REVIEW REQUIRED |
 | S2 | S2 Perception contract; public view | `s1-s5-mvp-examples.md` | Видимые факты и недоступная информация | Primary S2; не засчитывать скрытые значения | Различать видимое состояние и скрытые данные | PARTIAL до проверки learner payload |
 | S3 | S3 Counting contract | `s1-s5-mvp-examples.md` | Own matches, hidden dice, required matches | Primary S3; отдельно normal/Palifico | Подписывать числа и режим подсчёта | DOCUMENTED; fixtures требуют проверки |
 | S4 | S4 Probability contract | `s1-s5-mvp-examples.md` | Exact/at-least, точная вероятность, edge cases | Primary S4; only approved ruleset fixtures | Процент сопровождается определением события | DOCUMENTED; независимый пересчёт не подтверждён |
-| S5 | Game Domain 2.0.0 | S5 examples + ruleset v2 fixtures | Legal/illegal и конкретная строка перехода | Primary S5; fixtures require review | Показывать причину незаконности и применимое правило | DOCUMENTED; vectors PLANNED |
-| S6 | Event/history contracts | `s6-s7-mvp-examples.md` | Порядок событий, неполнота истории, отсутствие выдуманных ставок | Primary S6 | Видно, какие события доступны и какой фрагмент неполон | PARTIAL; нужен прогон неполных последовательностей |
-| S7 | S7 contract + observation rubric | `s6-s7-mvp-examples.md` | FACT/ASSUMPTION/CONTRADICTED, comparability, evidence strength | Primary S7; qualitative confidence only | Нейтральный язык и видимая ограниченность данных | PARTIAL; критерии требуют owner approval |
-| S8 | S8 contract + objective per scenario | `s8-s9-mvp-examples.md` | Legality, decision-time evidence, stated objective, reasoning | Primary S8; no outcome-based scoring | Цель и набор доступных действий до ответа | PARTIAL; допустимые цели требуют approval |
-| S9 | S9 contract + planning rubric | `s8-s9-mvp-examples.md` | Goal, assumptions, conditional branch, revision trigger | Primary S9; no guaranteed outcome | План и условия пересмотра читаемы отдельно | PARTIAL; обязательность рубрики требует approval |
+| S5 | `docs/contracts/s5-bid-mechanics.md` + Game Domain 2.0.0 | S5 examples + ruleset v2 fixtures | Legal/illegal и конкретная строка перехода | Primary S5; fixtures require review | Показывать причину незаконности и применимое правило | DOCUMENTED; vectors PLANNED |
+| S6 | `docs/contracts/s6-bid-history.md` + event semantics | `s6-s7-mvp-examples.md` | Порядок событий, неполнота истории, отсутствие выдуманных ставок | Primary S6 | Видно, какие события доступны и какой фрагмент неполон | PARTIAL; нужен прогон неполных последовательностей |
+| S7 | `docs/contracts/s7-opponent-analysis.md` + observation rubric | `s6-s7-mvp-examples.md` | FACT/ASSUMPTION/CONTRADICTED, comparability, evidence strength | Primary S7; qualitative confidence only | Нейтральный язык и видимая ограниченность данных | PARTIAL; критерии требуют owner approval |
+| S8 | `docs/contracts/s8-decision-making.md` + objective per scenario | `s8-s9-mvp-examples.md` | Legality, decision-time evidence, stated objective, reasoning | Primary S8; no outcome-based scoring | Цель и набор доступных действий до ответа | PARTIAL; допустимые цели требуют approval |
+| S9 | `docs/contracts/s9-match-strategy.md` + planning rubric | `s8-s9-mvp-examples.md` | Goal, assumptions, conditional branch, revision trigger | Primary S9; no guaranteed outcome | План и условия пересмотра читаемы отдельно | PARTIAL; обязательность рубрики требует approval |
 
 ## 3. Общие сквозные связи
 
@@ -87,4 +87,4 @@
 - каждый skill имеет хотя бы один approved MVP example либо явно записан как исключённый из release scope;
 - ни один открытый decision не маскируется предположением.
 
-На момент создания документа проверки реализации не выполнялись; `NOT_VERIFIED` остаётся честным исходным статусом.
+Наличие контрактов не меняет статусы выполнения: проверки реализации не заявлены; `NOT_VERIFIED` остаётся честным статусом до появления фактических evidence.
