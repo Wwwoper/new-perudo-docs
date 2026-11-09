@@ -1,6 +1,6 @@
 # Perudo — сквозные последовательности и потоки вызовов
 
-Версия: 1.0
+Версия: 1.1
 Статус: проектный контракт взаимодействия модулей.
 
 Диаграммы описывают логические вызовы внутри модульного монолита. Они не предписывают HTTP, брокер сообщений, фоновые workers или конкретную БД.
@@ -81,23 +81,29 @@ sequenceDiagram
     participant UI as Presentation
     participant App as Application
     participant Engine as Exercise Engine
+    participant Progress as Learning Progress
     participant Eval as Evaluation
     participant Feedback
-    participant Progress as Learning Progress
 
     User->>UI: Ответ на вопрос/шаг
-    UI->>App: SubmitAnswer(exercise_id, attempt_id, typed answer)
-    App->>Engine: Load public/private exercise by id
-    Engine-->>App: authorized evaluation context
-    App->>Eval: Evaluate(answer, criteria, evaluator version)
+    UI->>App: SubmitExerciseAnswer(submission_id, attempt_id, typed answer)
+    App->>Progress: RecordSubmission(RECEIVED)
+    Progress-->>App: сохранённая отправка
+    App->>Engine: Load authorized evaluation context
+    Engine-->>App: criteria + exercise/evaluator versions
+    App->>Eval: EvaluateAnswer(saved submission, criteria)
     Eval-->>App: EvaluationResult
-    App->>Progress: RecordSubmission + EvaluationResult + hints
+    App->>Progress: AttachEvaluationResult(submission_id, result)
+    Progress-->>App: отправка EVALUATED
+    App->>Progress: ApplySubmissionToProgress(submission_id)
     Progress-->>App: updated attempt/progress snapshot
-    App->>Feedback: BuildFeedback(EvaluationResult, public context)
+    App->>Feedback: BuildFeedback(EvaluationResult, public context, feedback_version)
     Feedback-->>App: FeedbackView
     App-->>UI: result + feedback + allowed next action
     UI-->>User: Показать основную ошибку и объяснение
 ```
+
+При сбое Application возобновляет сценарий с последней подтверждённой стадии по `submission_id`. Feedback строится после сохранения результата проверки. Learning Progress остаётся единственным владельцем отправки и попытки.
 
 Инварианты:
 
@@ -114,23 +120,28 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     participant App as Application
-    participant Eval as Evaluation
+    participant Engine as Exercise Engine
     participant Progress as Learning Progress
     participant Strategy as Learning Strategy
 
-    App->>Eval: FinalizeExercise(attempt)
-    Eval-->>App: final EvaluationResult
-    App->>Progress: CompleteAttempt(attempt, final result, submissions, hints)
-    Progress->>Progress: Calculate attempt metrics
-    Progress->>Progress: Update SkillProgress and history
-    Progress->>Progress: Update ErrorStatistics
-    Progress->>Progress: Schedule / deduplicate ReviewTask
-    Progress-->>App: ProgressSnapshot + review summary
+    App->>Engine: GetCompletionCriteria(exercise_id, version)
+    Engine-->>App: completion criteria
+    App->>Progress: GetAttempt(attempt_id)
+    Progress-->>App: attempt + submission/evaluation facts
+    App->>App: Check required steps; ignore incomplete optional steps
+    App->>Progress: CompleteAttempt(operation_id, completion_context)
+    Progress->>Progress: Set status COMPLETED and calculate attempt metrics
+    Progress->>Progress: Update SkillProgress, history, ErrorStatistics and ReviewTask
+    Progress-->>App: completed attempt + progress snapshot
+    App->>Engine: GetExerciseReviewView(attempt_id)
+    Engine-->>App: authorized review view with expected answers
     App->>Strategy: GetNextRecommendation(context)
     Strategy->>Progress: Read current skill state
     Progress-->>Strategy: read model
     Strategy-->>App: next ExercisePlan
 ```
+
+Learning Progress — единственный владелец статуса попытки. Application координирует завершение; Exercise Engine выдаёт эталон только после подтверждённого `COMPLETED`. Evaluation не завершает попытку и не раскрывает эталон.
 
 Learning Progress фиксирует факты и вычисляет состояние навыка по согласованным правилам. Learning Strategy использует результат для выбора следующего шага, но не меняет историю.
 

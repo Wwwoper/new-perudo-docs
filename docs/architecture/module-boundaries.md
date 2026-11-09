@@ -1,6 +1,6 @@
 # Perudo — межмодульные границы и контракты
 
-Версия: 1.0
+Версия: 1.1
 Статус: проектный архитектурный контракт, основанный на согласованных контрактах Game Domain, S2–S4, Exercise, Evaluation и Learning Progress.
 
 ## 1. Назначение
@@ -102,7 +102,7 @@ Evaluation не должен принимать эталон от клиента
 
 ### 4.6 Evaluation → Feedback → Learning Progress
 
-Evaluation возвращает неизменяемый `EvaluationResult`: результаты полей/шагов, итог, partial credit, первичную и зависимые ошибки, `feedback_key`.
+Evaluation возвращает неизменяемый `EvaluationResult`: результаты полей/шагов, итог, partial credit, первичную и зависимые ошибки, диагностические ключи. Пользовательский `FeedbackView` формирует отдельный Feedback.
 
 Feedback строит пользовательское сообщение, не меняя оценку и не раскрывая эталон до завершения упражнения.
 
@@ -120,8 +120,8 @@ Learning Progress предоставляет read-модель состояни�
 
 - Game Domain: Game, GameState, DomainEvent, StateSnapshot;
 - Exercise Engine: Exercise, PublicExercise, PrivateExerciseData, ExerciseConfig, generator metadata;
-- Evaluation: AnswerSubmission и EvaluationResult (если хранятся отдельно от агрегата попытки);
-- Learning Progress: ExerciseAttempt, SkillProgress, SkillProgressHistory, ErrorStatistics, ReviewSchedule, ReviewTask;
+- Evaluation: вычисление `EvaluationResult`; не владеет `AnswerSubmission` и не хранит конкурирующую запись отправки;
+- Learning Progress: `ExerciseAttempt` и вложенные `AnswerSubmission`, `EvaluationResult` как прикреплённый результат, SkillProgress, SkillProgressHistory, ErrorStatistics, ReviewSchedule, ReviewTask;
 - Learning Strategy: постоянные правила подбора и конфигурация стратегии.
 
 Физическое размещение таблиц/файлов может быть общим, но логическое владение не смешивается.
@@ -143,7 +143,7 @@ Learning Progress предоставляет read-модель состояни�
 
 - Изменение состояния партии: команда + события + новое состояние атомарны; `command_id` обязателен.
 - Создание упражнения: generate → validate → persist выполняется до показа упражнения.
-- Отправка ответа: AnswerSubmission и EvaluationResult фиксируются как одна логическая операция; повтор с тем же ключом идемпотентен.
+- Отправка ответа: `AnswerSubmission` сначала сохраняется со статусом `RECEIVED`; Evaluation выполняется отдельной восстанавливаемой стадией; результат прикрепляется со статусом `EVALUATED`; Progress обновляется отдельно и идемпотентно по `submission_id`.
 - Обновление прогресса: попытка, метрики и переходы SkillProgress согласованно обновляются; повторная обработка одной отправки не удваивает метрики.
 - Создание ReviewTask должно быть идемпотентным по типу/навыку/целевой дате или эквивалентному бизнес-ключу.
 

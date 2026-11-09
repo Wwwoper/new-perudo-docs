@@ -1,12 +1,12 @@
 # Perudo — надёжность межмодульных операций и идемпотентность
 
-Версия: 1.0
-Статус: проектный контракт надёжности.
+Версия: 1.1
+Статус: принятый проектный контракт надёжности.
 
 ## 1. Общие принципы
 
 1. Сначала валидировать вход и полномочия, затем менять состояние.
-2. Одна бизнес-операция не должна оставлять частично применённые данные.
+2. Каждая атомарная граница должна сохранять согласованные данные; межмодульный сценарий может состоять из нескольких восстанавливаемых стадий.
 3. Повтор технически доставленной операции не должен повторно учитывать бизнес-эффект.
 4. Ошибки генерации, пользовательские ошибки и инфраструктурные ошибки различаются.
 5. Восстановление использует сохранённые факты; оно не повторяет случайные операции.
@@ -42,11 +42,27 @@
 | Game command | Проверенный результат + все события команды + новое GameState |
 | Dudo resolution | Вся последовательность DUDO/REVEAL/RESOLVE/LOSS/ELIMINATION/ROUND/GAME + новое состояние |
 | Exercise creation | Валидированный immutable Exercise + Public/Private parts + generation metadata |
-| Answer submission | AnswerSubmission + EvaluationResult + ссылка на evaluator/exercise versions |
+| Answer submission stage 1 | AnswerSubmission со статусом RECEIVED и ссылками на attempt/exercise; владелец — Learning Progress |
+| Answer evaluation stage 2 | EvaluationResult, прикреплённый к отправке; статус отправки EVALUATED |
 | Attempt completion | Финальный статус + итоговые метрики попытки |
-| Progress update | SkillProgress + history + error stats + review task changes |
+| Progress update | SkillProgress + history + error stats + review task changes; идемпотентно по submission_id |
 
 Физическая транзакционная технология не определяется документом. Если операции позднее будут разделены между хранилищами, потребуется отдельный протокол согласованности; распределённая транзакция не предполагается для MVP.
+
+
+## 3.1 Восстанавливаемый жизненный цикл отправки
+
+Learning Progress — единственный владелец `AnswerSubmission` и её связи с `ExerciseAttempt`. Evaluation не хранит конкурирующую запись отправки и не изменяет статус попытки.
+
+Стадии сценария `SubmitExerciseAnswer`:
+
+1. `RecordSubmission`: сохранить пользовательский ответ со статусом `RECEIVED` и устойчивым `submission_id`.
+2. `EvaluateSubmission`: выполнить детерминированную проверку по сохранённым `exercise_version` и `evaluator_version`.
+3. `AttachEvaluationResult`: сохранить `EvaluationResult`, перевести отправку в `EVALUATED`.
+4. `ApplySubmissionToProgress`: идемпотентно обновить метрики и состояние навыка по тому же `submission_id`.
+5. `BuildFeedback`: сформировать пользовательский `FeedbackView` после сохранения результата проверки.
+
+Сбой между стадиями не откатывает уже подтверждённую стадию. Повтор сценария продолжает обработку по `submission_id`. Повторное применение результата не увеличивает метрики второй раз.
 
 ## 4. Ошибки и повторные попытки
 

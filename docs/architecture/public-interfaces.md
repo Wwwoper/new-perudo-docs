@@ -1,6 +1,6 @@
 # Perudo — минимальный каталог публичных межмодульных интерфейсов
 
-Версия: 1.0
+Версия: 1.1
 Статус: предлагаемый логический контракт; имена и сигнатуры не являются утверждённым Python API.
 
 ## 1. Принципы
@@ -181,14 +181,15 @@ Feedback не меняет оценку, прогресс и состояние 
 
 ```python
 CreateAttempt(operation_id, user_id, exercise_id, exercise_version) -> AttemptRef
-RecordSubmission(submission_id, attempt_id, typed_answer, hint_events) -> SubmissionRef
-AttachEvaluationResult(submission_id, evaluation_result) -> AttemptSnapshot
+RecordSubmission(submission_id, attempt_id, typed_answer, hint_events) -> SubmissionRef  # status=RECEIVED
+AttachEvaluationResult(submission_id, evaluation_result) -> AttemptSnapshot  # status=EVALUATED
+ApplySubmissionToProgress(submission_id) -> ProgressSnapshot
 CompleteAttempt(operation_id, attempt_id, completion_context) -> AttemptSnapshot
 AbandonAttempt(operation_id, attempt_id) -> AttemptSnapshot
 ResetSkillProgress(operation_id, user_id, skill_id) -> SkillProgressSnapshot
 ```
 
-`RecordSubmission` фиксирует пользовательский факт. `AttachEvaluationResult` идемпотентно прикрепляет результат проверки к уже сохранённой отправке. Реализация может объединить эти два шага в один Application use case, но не должна терять возможность восстановиться после сбоя.
+`RecordSubmission` фиксирует пользовательский факт со статусом `RECEIVED`. `AttachEvaluationResult` идемпотентно прикрепляет результат и переводит отправку в `EVALUATED`. `ApplySubmissionToProgress` отдельно и идемпотентно учитывает результат по `submission_id`. Evaluation не владеет отправкой и не обновляет прогресс. Application возобновляет незавершённые стадии по тому же идентификатору.
 
 ### Queries
 
@@ -217,7 +218,7 @@ Application координирует последовательность, но 
 Минимальные сценарии:
 
 - `StartLearningExercise` — получить план, создать/сохранить упражнение, создать попытку, вернуть public view;
-- `SubmitExerciseAnswer` — сохранить отправку, получить критерии, выполнить Evaluation, сохранить результат, обновить Progress, построить Feedback;
+- `SubmitExerciseAnswer` — сохранить отправку (`RECEIVED`), получить критерии, выполнить Evaluation, прикрепить результат (`EVALUATED`), идемпотентно обновить Progress, построить Feedback;
 - `CompleteExerciseAttempt` — проверить completion criteria, завершить попытку, получить разрешение на review view;
 - `PlaceBidAndAdvanceTurn` — выполнить PlaceBid, затем надёжно завершить AdvanceTurn;
 - `ResolveDudo` — вызвать одну атомарную доменную команду DeclareDudo;
