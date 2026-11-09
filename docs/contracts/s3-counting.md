@@ -43,7 +43,7 @@ class GameSituation:
     bid: Bid
 ```
 
-`Ruleset` содержит `ruleset_id`, `version`, `ones_are_wildcards`. Для согласованного классического профиля используется `PERUDO_ZYGOMATIC_CLASSIC_V1`; фактический режим раунда задаётся отдельно.
+`Ruleset` содержит `ruleset_id`, `version`, `ones_are_wildcards`. Для нормативного классического профиля используется `PERUDO_CLASSIC_ZYGOMATIC_2022@2.0.0`; фактический режим раунда задаётся отдельно. Старый идентификатор `PERUDO_ZYGOMATIC_CLASSIC_V1` не использовать для новых упражнений, попыток или результатов.
 
 `CountContext` передаёт `round_mode`, `ruleset_id` и `ruleset_version`.
 
