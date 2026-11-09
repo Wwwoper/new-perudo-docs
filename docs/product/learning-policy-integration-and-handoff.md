@@ -101,3 +101,26 @@ A document marked `proposed`, `draft`, or `open` must not be represented to the 
 | Mastery and review | TBD | — | — | — |
 | Learning Strategy | TBD | — | — | — |
 | End-to-end release acceptance | TBD | — | — | — |
+
+## 8. Дополнительные документы приёмки
+
+Следующие документы уточняют процедуру проверки и не заменяют нормативные контракты:
+
+| Concern | Document | Use |
+|---|---|---|
+| Статусы всех MVP fixtures | `../learning/examples/mvp-example-review-register.md` | Отслеживать READY_FOR_REVIEW, APPROVED и BLOCKED_BY_RULE_DECISION по каждому example_id |
+| Проверка эталонов | `../learning/examples/mvp-example-validation-plan.md` | Готовить correct, incorrect, partial, boundary, alternative, insufficient и privacy checks |
+| UX-приёмка | `learning-ux-acceptance.md` | Проверять иерархию задачи, терминологию, обратную связь и desktop/mobile поведение |
+| Решения владельца продукта | `product-owner-decision-packet.md` | Фиксировать OPEN/APPROVED/CHANGED/DEFERRED решения с reviewer и датой |
+| Release gates | `mvp-release-validation-plan.md` | Проводить G1–G8 и собирать доказательства приёмки |
+
+## 9. Уточнённый порядок финальной проверки
+
+1. Закрыть необходимые решения Game Domain и перенести их в authoritative contract.
+2. Обновить статусы fixtures в review register; не считать READY_FOR_REVIEW утверждённым содержанием.
+3. Пройти validation plan для каждого кандидата scored MVP.
+4. Утвердить rubric, mastery/review и Learning Strategy policies.
+5. Проверить UX acceptance и end-to-end сценарии.
+6. Провести release gates G1–G8 и заполнить sign-off.
+
+Наличие этих документов повышает проверяемость процесса, но не означает, что сами gates уже пройдены.
