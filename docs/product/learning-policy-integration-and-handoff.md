@@ -34,7 +34,7 @@ No step may silently substitute its own interpretation for another step's contra
 
 | Decision group | Required decision | Current state | Affected documents |
 |---|---|---|---|
-| Rules | Complete ordinary bid transition table | Open / release blocker for affected cases | Ruleset matrix; Game Domain; S1/S5 examples |
+| Rules | Complete ordinary and Palifico bid transition table | APPROVED in ruleset 2.0.0; implementation vectors PLANNED | `docs/contracts/game-domain.md`; ruleset decision record; S1/S5 examples |
 | Rules | Exact transition to and from ones | Open / release blocker for affected cases | Ruleset matrix; Game Domain; S1/S5/S8 examples |
 | Rules | Palifico transition and two-player exception details | Open / release blocker for affected cases | Ruleset matrix; Game Domain; S1/S3/S4/S5/S9 examples |
 | Evaluation | Approve atomic criterion model and treatment of partial answers | Proposed | Answer evaluation rubric |

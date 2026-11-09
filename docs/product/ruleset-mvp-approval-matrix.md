@@ -4,7 +4,7 @@
 
 ## 1. Purpose
 
-Scored exercises must be derived from one explicit ruleset. This matrix identifies which rule areas are safe to use in MVP examples and which must remain excluded until the authoritative Game Domain wording and boundary examples are approved.
+Scored exercises must be derived from one explicit ruleset. This matrix identifies the rules available to MVP examples and the separate review gate for each exercise. Ruleset approval does not itself approve exercise content.
 
 The matrix is intentionally conservative. A rule being familiar from another Perudo edition is not sufficient evidence that it belongs to the project's selected ruleset.
 
@@ -55,7 +55,7 @@ A rule being approved does not automatically approve an exercise. Before an exer
 
 Examples still marked `READY_FOR_REVIEW` or `BLOCKED_BY_RULE_DECISION` do not become approved merely because the rules decision is closed.
 
-## 4. Required format for a rules approval
+## 5. Required format for future rules changes
 
 Each approved rule row must contain:
 
@@ -72,7 +72,7 @@ Each approved rule row must contain:
 
 A rule is not approved merely because its prose has been drafted. The transition table and boundary examples must agree.
 
-## 5. Exercise release gate
+## 6. Exercise release gate
 
 Before an exercise receives `APPROVED`:
 
@@ -84,6 +84,6 @@ Before an exercise receives `APPROVED`:
 
 If a rule is unresolved, mark only the affected exercise variant `BLOCKED_BY_RULE_DECISION`. Do not block unrelated exercises that rely exclusively on agreed rules.
 
-## 6. Approval record
+## 7. Approval record
 
 BID/PAL decisions are recorded as approved in `docs/product/review/ruleset/ruleset-owner-decision-record.md` (2026-11-09). The ruleset is `2.0.0`. Implementation and exercise validation remain separate gates.
