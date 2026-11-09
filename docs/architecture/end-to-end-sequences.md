@@ -1,6 +1,6 @@
 # Perudo — сквозные последовательности и потоки вызовов
 
-Версия: 1.1
+Версия: 1.2
 Статус: проектный контракт взаимодействия модулей.
 
 Диаграммы описывают логические вызовы внутри модульного монолита. Они не предписывают HTTP, брокер сообщений, фоновые workers или конкретную БД.
@@ -233,3 +233,32 @@ Fallback на предыдущий snapshot допустим только есл
 8. Дудо-последовательность атомарна и идемпотентна.
 9. Восстановление последнего snapshot и fallback на предыдущий.
 10. Повреждённое событие/неизвестная схема приводит к явной ошибке.
+
+
+## 8. Генерация упражнения и явный старт попытки
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant App as Application
+    participant Strategy as Learning Strategy
+    participant Engine as Exercise Engine
+    participant Skill as Skill Generator
+    participant Progress as Learning Progress
+
+    User->>App: Request next exercise
+    App->>Strategy: SelectNextExercise(context)
+    Strategy-->>App: ExercisePlan
+    App->>Engine: CreateExercise(operation_id, config)
+    Engine->>Skill: GenerateCandidate(config, random_source)
+    Skill-->>Engine: typed candidate + private criteria
+    Engine->>Engine: Validate envelope, split public/private, persist
+    Engine-->>App: PublicExerciseRef
+    App-->>User: Exercise preview/public view
+    User->>App: Start exercise
+    App->>Progress: CreateAttempt(operation_id, exercise_ref)
+    Progress-->>App: attempt_id
+    App-->>User: Active exercise + attempt_id
+```
+
+Предварительная генерация и показ preview не создают попытку. Попытка появляется только при явном старте. Повтор запроса с тем же `operation_id` возвращает прежний результат; повторное открытие активной попытки использует прежний `attempt_id`.
