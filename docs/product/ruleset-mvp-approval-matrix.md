@@ -1,6 +1,6 @@
 # MVP Ruleset Approval Matrix
 
-**Status:** product-owner review artifact. It records the currently agreed baseline and the remaining rule decisions; it does not introduce new game rules.
+**Status:** APPROVED for ruleset `PERUDO_CLASSIC_ZYGOMATIC_2022` version `2.0.0`. Normative rules are in `docs/contracts/game-domain.md`; decision rationale is in `docs/product/review/ruleset/ruleset-owner-decision-record.md`.
 
 ## 1. Purpose
 
@@ -29,18 +29,31 @@ The following points are treated as existing project decisions and may be used w
 | Bid upper bound | A bid above the total number of active dice is prohibited | May be used for this boundary check only; it does not define bid-to-bid progression |
 | Event semantics | `BID_PLACED` records a bid; `TURN_ADVANCED` advances the turn exactly once | S6 examples must keep these event meanings separate |
 
-## 3. Rule areas that remain blocked or need explicit examples
+## 3. Decision closure
 
-| Decision ID | Rule area | What is not yet sufficiently specified in this learning packet | Required approval artifact | Scored MVP status |
-|---|---|---|---|---|
-| RULE-MVP-01 | Ordinary bid progression | Complete ordering and legal transition rules between quantity/face pairs, including all boundary cases | Authoritative transition table plus examples for each transition class | Block transitions that depend on the missing table; retain only independently established checks |
-| RULE-MVP-02 | Transition to/from ones | Exact legal transition conditions and ordering relative to other faces | Explicit table rows and boundary examples for both directions | Block affected S1/S5/S8 answers |
-| RULE-MVP-03 | Palifico bid progression | Exact legal quantity/face transitions while Palifico is active | Mode-specific transition table | Block affected S1/S5/S9 answers |
-| RULE-MVP-04 | Palifico two-player exception | Exact trigger, duration, and effect of the exception in a two-player game | State-transition examples covering entry, active round, and exit | Block exception-specific scoring |
-| RULE-MVP-05 | Palifico face-change permission | Exact interaction between the active Palifico round and the persistent `has_declared_palifico` permission | Decision table with player state, current mode, and permitted action | Block ambiguous permission cases |
-| RULE-MVP-06 | Palifico activation edge cases | Exact behavior when a player reaches one die at different active-player counts and at round boundaries | State table covering active count at the specified decision point | Use only the already agreed activation condition; block unlisted edge cases |
+The formerly open BID/PAL decisions are closed for ruleset `2.0.0`:
 
-A missing transition rule must not be reconstructed from a familiar edition, an interface convention, or a likely strategic interpretation.
+| Decision family | Approved outcome | Evidence / normative location |
+|---|---|---|
+| BID-01…BID-04 | NORMAL progression, Paco conversion formulas, opening-bid restriction | `docs/contracts/game-domain.md` §§3–3.5 |
+| PAL-01…PAL-03 | Activation, one-round duration, non-wild Paco, historical permission | `docs/contracts/game-domain.md` §§4–6 |
+| PAL-04…PAL-06 | Quantitative progression for historical permission, Paco treated as ordinary PAL face, active-player checkpoint | `docs/contracts/game-domain.md` §5 and §4.2; project interpretations are labelled |
+| PAL-07 | Persistent `has_declared_palifico` set only on actual declaration | `docs/contracts/game-domain.md` §6 |
+
+No unresolved BID/PAL rule remains in the selected MVP ruleset. The distinction between source-derived rules and project interpretations is mandatory in future changes.
+
+## 4. Scored exercise release gate
+
+A rule being approved does not automatically approve an exercise. Before an exercise receives `APPROVED`:
+
+- all rules it relies on map to the normative Game Domain contract;
+- the example stores ruleset version `2.0.0`;
+- the expected answer can be derived without hidden values unavailable to the learner;
+- exceptions are represented in the public scenario when they affect the answer;
+- evaluator vectors cover positive, negative and boundary outcomes;
+- a reviewer has recorded the actual review result.
+
+Examples still marked `READY_FOR_REVIEW` or `BLOCKED_BY_RULE_DECISION` do not become approved merely because the rules decision is closed.
 
 ## 4. Required format for a rules approval
 
@@ -73,13 +86,4 @@ If a rule is unresolved, mark only the affected exercise variant `BLOCKED_BY_RUL
 
 ## 6. Approval record
 
-| Decision ID | Owner | Status (`OPEN` / `APPROVED` / `REJECTED`) | Approved ruleset version | Evidence / review reference | Date |
-|---|---|---|---|---|---|
-| RULE-MVP-01 | TBD | OPEN | — | — | — |
-| RULE-MVP-02 | TBD | OPEN | — | — | — |
-| RULE-MVP-03 | TBD | OPEN | — | — | — |
-| RULE-MVP-04 | TBD | OPEN | — | — | — |
-| RULE-MVP-05 | TBD | OPEN | — | — | — |
-| RULE-MVP-06 | TBD | OPEN | — | — | — |
-
-This document is a review matrix, not a substitute for the authoritative Game Domain contract. Once approved, decisions must be transferred to that contract and versioned there.
+BID/PAL decisions are recorded as approved in `docs/product/review/ruleset/ruleset-owner-decision-record.md` (2026-11-09). The ruleset is `2.0.0`. Implementation and exercise validation remain separate gates.
