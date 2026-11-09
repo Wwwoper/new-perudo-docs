@@ -8,7 +8,7 @@
 
 Критические условия до release:
 
-1. закрыть или исключить из scored scope неутверждённые переходы ставок и Palifico cases;
+1. выполнить реализационные тесты утверждённых переходов ставок и Palifico cases (продуктовые решения уже закрыты);
 2. проверить эталонные примеры независимыми review records;
 3. подтвердить отсутствие скрытых данных в learner-facing payload;
 4. независимо проверить математические эталоны S4;
@@ -20,7 +20,7 @@
 
 | Область | Authoritative / primary docs | Handoff evidence |
 |---|---|---|
-| Game rules | `docs/contracts/game-domain.md`, ruleset decisions | Approved ruleset, transition tables, Palifico boundary cases |
+| Game rules | `docs/contracts/game-domain.md`, `ruleset-owner-decision-record.md` | Approved ruleset 2.0.0; transition vectors PLANNED, implementation tests pending |
 | Skill boundaries | `docs/contracts/s1-*` … `s9-*` и skill contracts | Boundary review, prerequisite map |
 | Exercise scope | `docs/learning/mvp-exercise-scope.md`, `skill-exercise-map.md` | Approved example IDs and fixtures |
 | Example validation | `docs/learning/examples/mvp-example-validation-plan.md`, review register | Completed per-example review records |
@@ -93,8 +93,8 @@
 
 | ID | Open item | Owner | Required evidence | Release impact |
 |---|---|---|---|---|
-| H-01 | Bid transition tables | Product owner / rules reviewer | Selected edition and approved table | Blocks affected scored examples |
-| H-02 | Palifico edge cases | Product owner / rules reviewer | Approved state/transition table | Blocks affected scored examples |
+| H-01 | Bid transition implementation tests | Implementation / QA reviewer | Executed vectors against ruleset 2.0.0 | Blocks affected scored examples until verified |
+| H-02 | Palifico edge-case implementation tests | Implementation / QA reviewer | Executed state/transition vectors | Blocks affected scored examples until verified |
 | H-03 | S7 evidence bands and learner wording | Product owner | Approved rubric and reviewed examples | Blocks S7 mastery claim |
 | H-04 | S8 MVP objective set | Product owner | Approved objective/action policy | Blocks affected S8 scored cases |
 | H-05 | S9 mandatory rubric by difficulty | Product owner | Approved rubric | Blocks affected S9 mastery claim |
@@ -126,16 +126,16 @@
 
 До выполнения этих условий корректный статус продукта — **SPECIFICATION IN REVIEW / NOT SIGNED OFF**. Реальные тесты реализации не заявляются и не подразумеваются данным документом.
 
-## 9. Дополнительный gate: подтверждение переходов ставок и Palifico
+## 9. Дополнительный gate: ruleset 2.0.0
 
-До handoff требуется закрыть пакет `ruleset/ruleset-owner-decision-packet.md`:
+Продуктовые решения закрыты в `ruleset/ruleset-owner-decision-record.md`. До release требуется:
 
-- [ ] Владелец подтвердил целевую редакцию Zygomatic 2022.
-- [ ] Решения BID-01…BID-04 имеют `APPROVE`, `CHANGE` или `DEFER` с reviewer/date.
-- [ ] Решения PAL-01…PAL-07 имеют `APPROVE`, `CHANGE` или `DEFER` с reviewer/date.
+- [x] Владелец поручил принять целевую редакцию Zygomatic 2022; ruleset 2.0.0 утверждён 2026-11-09.
+- [x] Решения BID-01…BID-04 имеют статус `APPROVED`.
+- [x] Решения PAL-01…PAL-07 имеют статус `APPROVED`.
 - [ ] Проектные нормализации явно отделены от формулировок источника.
 - [ ] Затронутые примеры просмотрены по `ruleset/affected-exercise-impact-map.md`.
-- [ ] Тест-векторы `ruleset/ruleset-transition-test-vectors.md` перенесены в реализационные тесты.
+- [ ] Тест-векторы `ruleset/ruleset-transition-test-vectors.md` реализованы и фактически запущены.
 - [ ] Ни один заблокированный переход не используется как scored mastery evidence.
 
-Найденный первичный источник повышает доказательную базу документации, но не является свидетельством реализации или прохождения тестов.
+Найденный первичный источник и owner decision закрывают продуктовую неопределённость, но не являются свидетельством реализации или прохождения тестов. Сводный handoff: `docs/product/review/mvp-final-scope-and-handoff.md`.

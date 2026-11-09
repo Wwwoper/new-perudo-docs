@@ -1,6 +1,6 @@
 # Матрица сквозной согласованности S1–S9
 
-**Статус:** контрольная матрица для независимой ревизии; статусы не означают, что проверки реализации выполнены.
+**Статус:** обновлена после утверждения ruleset `2.0.0`; статусы не означают, что проверки реализации выполнены.
 
 ## 1. Назначение и статусная модель
 
@@ -20,11 +20,11 @@
 
 | Skill | Source of truth / boundary | MVP evidence family | Evaluation focus | Progress attribution | UX acceptance | Current audit status |
 |---|---|---|---|---|---|---|
-| S1 | Game Domain; правила и последствия | `s1-s5-mvp-examples.md` | Правильное применение утверждённого правила и последствие | Primary S1; blocked rule cases не дают mastery evidence | Ясный режим, событие и вопрос о последствии | BLOCKED для неутверждённых переходов |
+| S1 | `docs/contracts/game-domain.md` ruleset 2.0.0 | S1 examples + ruleset v2 fixtures | Правильное применение утверждённого правила и последствие | Primary S1; fixtures требуют review | Ясный режим, событие и вопрос о последствии | DOCUMENTED; examples REVIEW REQUIRED |
 | S2 | S2 Perception contract; public view | `s1-s5-mvp-examples.md` | Видимые факты и недоступная информация | Primary S2; не засчитывать скрытые значения | Различать видимое состояние и скрытые данные | PARTIAL до проверки learner payload |
 | S3 | S3 Counting contract | `s1-s5-mvp-examples.md` | Own matches, hidden dice, required matches | Primary S3; отдельно normal/Palifico | Подписывать числа и режим подсчёта | DOCUMENTED; fixtures требуют проверки |
 | S4 | S4 Probability contract | `s1-s5-mvp-examples.md` | Exact/at-least, точная вероятность, edge cases | Primary S4; only approved ruleset fixtures | Процент сопровождается определением события | DOCUMENTED; независимый пересчёт не подтверждён |
-| S5 | Game Domain + S5 contract | `s1-s5-mvp-examples.md` | Legal/illegal и конкретная строка перехода | Primary S5; no evidence from blocked transitions | Показывать причину незаконности и применимое правило | BLOCKED для отсутствующих transition rows |
+| S5 | Game Domain 2.0.0 | S5 examples + ruleset v2 fixtures | Legal/illegal и конкретная строка перехода | Primary S5; fixtures require review | Показывать причину незаконности и применимое правило | DOCUMENTED; vectors PLANNED |
 | S6 | Event/history contracts | `s6-s7-mvp-examples.md` | Порядок событий, неполнота истории, отсутствие выдуманных ставок | Primary S6 | Видно, какие события доступны и какой фрагмент неполон | PARTIAL; нужен прогон неполных последовательностей |
 | S7 | S7 contract + observation rubric | `s6-s7-mvp-examples.md` | FACT/ASSUMPTION/CONTRADICTED, comparability, evidence strength | Primary S7; qualitative confidence only | Нейтральный язык и видимая ограниченность данных | PARTIAL; критерии требуют owner approval |
 | S8 | S8 contract + objective per scenario | `s8-s9-mvp-examples.md` | Legality, decision-time evidence, stated objective, reasoning | Primary S8; no outcome-based scoring | Цель и набор доступных действий до ответа | PARTIAL; допустимые цели требуют approval |
@@ -34,7 +34,7 @@
 
 | Link ID | From → To | Invariant | Evidence required | Current status |
 |---|---|---|---|---|
-| X-01 | Game Domain → S1/S5 | Scored rule example references an approved ruleset rule and transition row | Rule ID + approved example + boundary tests | BLOCKED where transition table is absent |
+| X-01 | Game Domain → S1/S5 | Scored rule example references ruleset 2.0.0 and a normative transition row | Rule ID + reviewed example + boundary tests | DOCUMENTED; example review and execution pending |
 | X-02 | S2 → S3 | Only public state and learner's own dice are exposed | Payload inspection and hidden-data negative test | NOT_VERIFIED |
 | X-03 | S3 → S4 | `own_matches`, `hidden_dice`, `required_matches`, mode and probability parameter agree | Cross-module fixture with exact expected values | NOT_VERIFIED |
 | X-04 | S4 → S8 | Probability is an input to decision evaluation, not the decision itself | Exercise objective, action set and independent evaluator criteria | PARTIAL |
@@ -63,13 +63,13 @@
 10. UX scenario и критерий завершения;
 11. reviewer, дата и результат проверки.
 
-Если любое правило, которое влияет на эталон, имеет статус OPEN/DEFERRED, пример получает `BLOCKED_BY_RULE_DECISION`, а не `APPROVED`.
+Если любое правило, которое влияет на эталон, имеет статус OPEN/DEFERRED, пример получает `BLOCKED_BY_RULE_DECISION`, а не `APPROVED`. BID/PAL для ruleset 2.0.0 больше не OPEN; индивидуальный review fixtures всё ещё обязателен.
 
 ## 5. Системные риски согласованности
 
 | ID | Риск | Severity | Обязательное действие |
 |---|---|---|---|
-| CONS-01 | Ruleset и переходы ставок не имеют полного утверждённого набора строк | BLOCKER | Не принимать зависимые S1/S5/S8/S9 examples |
+| CONS-01 | Правила и переходы ставок не были утверждены | CLOSED — documentation decision | Ruleset 2.0.0 contract and decision record exist; implementation tests remain planned |
 | CONS-02 | Пороги из HTML-прототипа могут быть приняты за универсальную стратегию | HIGH | Оставить их параметрами отдельных упражнений |
 | CONS-03 | Полевая точность/счёт прототипа не равны независимому mastery evidence | BLOCKER | Использовать submission ledger и mastery policy |
 | CONS-04 | Скрытые значения могут быть замаскированы только в UI, но передаваться в payload | BLOCKER | Проверить DTO/payload на отсутствие скрытых значений |

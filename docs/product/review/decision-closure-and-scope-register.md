@@ -1,12 +1,14 @@
 # Реестр закрытия продуктовых решений и границ MVP
 
-**Статус:** рабочий реестр; не утверждает решения за владельца продукта.
+**Статус:** рабочий реестр; BID/PAL decisions закрыты по поручению владельца продукта 2026-11-09, прочие продуктовые решения сохраняют собственные статусы.
 
 ## 1. Принцип
 
 Этот документ сводит открытые решения из Game Domain, Product Owner Decision Packet, learning policy и S1–S9 audit. Он не меняет authoritative contracts. Решение считается закрытым только после записи `APPROVE`, `CHANGE` или `DEFER`, reviewer, даты, основания и обновления целевого нормативного документа.
 
-## 2. Блокирующие игровые решения
+## 2. Исторический список игровых решений, теперь закрытых
+
+Таблица ниже фиксирует scope первоначальных вопросов. Текущий статус и нормативный результат приведены в §9 и в `ruleset/ruleset-owner-decision-record.md`.
 
 | Decision | Требуемое подтверждение | Зависимые навыки | Release treatment до approval |
 |---|---|---|---|
@@ -78,14 +80,24 @@ MVP можно сузить, исключив спорные сценарии. �
 
 ## 8. Evidence update: Zygomatic 2022 bid and Palifico rules
 
-Официальная инструкция Zygomatic 2022 найдена и извлечена в `ruleset/zygomatic-2022-source-extract.md`. Наличие первичного источника уточняет содержание решений BID/PAL, но **не закрывает их без owner approval**.
+Официальная инструкция Zygomatic 2022 найдена и извлечена в `ruleset/zygomatic-2022-source-extract.md`. В сочетании с явным поручением владельца продукта решения BID/PAL закрыты; нормативный контракт опубликован в `docs/contracts/game-domain.md`.
 
 | Decision | Evidence update | Status after source review |
 |---|---|---|
-| BID-01 | Обычная иерархия и отдельные Paco переходы описаны на стр. 3–4 | OPEN — требуется перенос в authoritative Game Domain и owner approval |
-| BID-02 / BID-03 | Формулы `ceil(q/2)` и `2p+1` описаны на стр. 4 | OPEN — требуется owner approval и тестовые границы |
-| PAL-01 / PAL-04 | Триггер и один следующий Palifico раунд описаны на стр. 6 | OPEN — требуется нормализация момента активации |
-| PAL-02 / PAL-03 | Отсутствие джокеров, запрет смены грани и исключение для ранее объявлявшего игрока описаны на стр. 6 | OPEN — количественная формула для исключения требует отдельного решения |
-| PAL-05 | При двух оставшихся игроках Palifico не применяется, стр. 6 | OPEN — требуется выбрать момент измерения активных игроков |
+| BID-01 | Обычная иерархия и отдельные Paco переходы описаны на стр. 3–4 | APPROVED — Game Domain 2.0.0 |
+| BID-02 / BID-03 | Формулы `ceil(q/2)` и `2p+1` описаны на стр. 4 | APPROVED — vectors PLANNED |
+| PAL-01 / PAL-04 | Триггер и один следующий Palifico раунд описаны на стр. 6 | APPROVED — checkpoint normalized in Game Domain 2.0.0 |
+| PAL-02 / PAL-03 | Отсутствие джокеров, запрет смены грани и исключение для ранее объявлявшего игрока описаны на стр. 6 | APPROVED — quantitative progression explicitly labelled project interpretation |
+| PAL-05 | При двух оставшихся игроках Palifico не применяется, стр. 6 | APPROVED — count checked after Dudo resolution and elimination |
 
 См. `ruleset/ruleset-owner-decision-packet.md` для решений и формы подписи. Не считать найденный источник эквивалентом утверждения владельца.
+
+## 9. Закрытие BID/PAL по поручению владельца продукта — 2026-11-09
+
+Владелец продукта поручил принять рекомендуемое решение без дополнительного раунда вопросов. Решения BID-01…BID-04 и PAL-01…PAL-07 переведены в `APPROVED` для `PERUDO_CLASSIC_ZYGOMATIC_2022@2.0.0`.
+
+Нормативный источник: `docs/contracts/game-domain.md`.
+Обоснование и разграничение source-derived/project interpretation: `docs/product/review/ruleset/ruleset-owner-decision-record.md`.
+План тестирования: `docs/product/review/ruleset/ruleset-transition-test-vectors.md` (`PLANNED`, не выполнен).
+
+Это закрывает продуктовые решения о правилах, но не approval эталонных примеров и не подтверждает реализационные тесты. S5-E03 больше не блокируется открытым решением правил и имеет `READY_FOR_REVIEW`; остальные fixtures сохраняют свои индивидуальные статусы.
