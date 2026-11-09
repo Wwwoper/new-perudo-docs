@@ -6,7 +6,7 @@
 
 | Gate | Требуемое доказательство | Текущий статус |
 |---|---|---|
-| H-01 Ruleset | утверждённый первичный источник и закрытые BID/PAL решения либо документированный narrow scope | BLOCKED |
+| H-01 Ruleset | утверждённый первичный источник и закрытые BID/PAL решения либо документированный narrow scope | PASS — documentation decision; implementation vectors PLANNED |
 | H-02 Exercise content | каждый MVP example имеет review record и статус APPROVED | NOT_VERIFIED |
 | H-03 S4 math | точные эталоны и тест-векторы независимо пересчитаны | PARTIAL — арифметика шести примеров проверена; реализация нет |
 | H-04 Evaluation | рубрика, accepted alternatives и optional criteria утверждены | NOT_VERIFIED |
@@ -48,4 +48,6 @@
 
 ## 5. Разрешение на следующий этап
 
-Техническое проектирование можно начинать после решения владельца продукта о границах MVP и закрытия `H-01` для всех включённых игровых сценариев. Реализация scored exercise content дополнительно требует `H-02`, `H-04` и `H-05`. Остальные gates остаются release acceptance criteria и должны быть проверены на работающем продукте.
+После утверждения ruleset 2.0.0 и текущих границ MVP техническое проектирование продуктового scope разрешено. Это не разрешение на выпуск или на фиксацию детальных API/DTO до восстановления отсутствующих в текущем checkout skill-level contracts. Реализация scored exercise content дополнительно требует `H-02`, `H-04` и `H-05`. Остальные gates остаются release acceptance criteria и должны быть проверены на работающем продукте.
+
+Сводная сверка и точный перечень отсутствующих контрактов: `docs/product/review/mvp-final-scope-and-handoff.md`.
