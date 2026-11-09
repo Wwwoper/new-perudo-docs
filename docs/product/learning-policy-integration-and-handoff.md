@@ -124,3 +124,25 @@ A document marked `proposed`, `draft`, or `open` must not be represented to the 
 6. Провести release gates G1–G8 и заполнить sign-off.
 
 Наличие этих документов повышает проверяемость процесса, но не означает, что сами gates уже пройдены.
+
+## 10. Материалы независимого сквозного аудита
+
+Дополнительные документы текущего review этапа:
+
+| Concern | Document | Use |
+|---|---|---|
+| HTML и скриншоты-прототипы | `review/source-material-and-prototype-review.md` | Разделять подтверждённые возможности reference artifacts и неподтверждённые продуктовые требования |
+| Сквозные связи S1–S9 | `review/cross-document-consistency-matrix.md` | Проверять границы навыков, examples, evaluation, progress и UX на уровне инвариантов |
+| Открытые решения и scope | `review/decision-closure-and-scope-register.md` | Не закрывать правила и policy decisions без владельца и evidence; исключать blocked cases из scored scope |
+| Финальный handoff | `review/final-product-audit-and-handoff.md` | Собирать release gates, доказательства и sign-off без заявления о непроведённых тестах |
+
+Эти документы являются review и handoff artifacts. Они не имеют приоритета над Game Domain, skill contracts или утверждёнными policy documents. Если обнаружено противоречие, его следует оформить как finding и исправить в authoritative документе отдельным согласованным изменением.
+
+## 11. Обязательный порядок закрытия review findings
+
+1. Зафиксировать finding с точной ссылкой на затронутый контракт/example и указать severity.
+2. Определить, является ли расхождение ошибкой документа, открытым продуктовым решением или непроверенным поведением реализации.
+3. Для правила или policy получить явное решение владельца продукта; для реализации назначить проверку и приложить фактический результат.
+4. Исправить authoritative document и затронутые examples/evaluator criteria согласованными патчами.
+5. Повторно пройти все связанные строки consistency matrix и сохранить evidence.
+6. Не менять `OPEN`, `BLOCKED` или `NOT_VERIFIED` на `APPROVED` только на основании наличия нового документа.
